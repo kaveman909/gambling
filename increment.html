@@ -24,93 +24,89 @@ Outputs
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Incrementer - Karl Udris and David Tracy</title>
+<head>
+	<title>Incrementer - Karl Udris and David Tracy</title>
 
-		<script type="text/javascript">
+	<script type="text/javascript">
 
-			function processInputs() {
-				var minBet;
-				var maxBet;
-				var bank;
-				var winProb;
-				var steps;
-				var target;
+	function processInputs() {
+		var minBet;
+		var maxBet;
+		var bank;
+		var winProb;
+		var steps;
+		var target;
 
-				minBet = document.getElementById('minBet').value;
-				maxBet = document.getElementById('maxBet').value;
-				bank = document.getElementById('bank').value;
-				winProb = document.getElementById('winProb').value;
-				steps = document.getElementById('steps').value;
-				target = document.getElementById('target').value;
+		minBet = document.getElementById('minBet').value;
+		maxBet = document.getElementById('maxBet').value;
+		bank = document.getElementById('bank').value;
+		winProb = document.getElementById('winProb').value;
+		steps = document.getElementById('steps').value;
+		target = document.getElementById('target').value;
 
-				simulateGame(minBet, maxBet, bank, winProb, steps, target);
+		simulateGame(minBet, maxBet, bank, winProb, steps, target);
 
+	}
+
+	function simulateGame(minBet, maxBet, bank, winProb, steps, target) {
+		var bets = new Array();
+		var bankHistory = new Array();
+
+		for(var x  = 0; x < steps; x++) {
+			bets[x] = target / steps;
+		}
+
+		var lastBet = bets.length - 1;	// index of most recent bet placed
+		var bet = bets[0] + bets[lastBet];	
+
+		// While the game can be played
+		while((bets.length > 0) && (bank > 0) && (bet <= bank)) {
+			lastBet = bets.length - 1;
+			bet = bets[0] + bets[lastBet];
+			bankHistory.push(bank);	// Record the current value of our bank for history
+			// If we won the bet
+			if(winOrLose(winProb) == "win") {
+				bank = (bank * 1) + (bet * 1);	// Add to our bank because we won
+				bets.pop();	// Remove the last element from the bets array because we won
+				bets.shift();	// Remove the first element from the bets array because we won
+			} else {
+				bank = (bank * 1) - (bet * 1);	// Subtract from our bank because we lost
+				bets.push(bet);	// Add the bet to the end of the bets array because we lost
 			}
+		}
+		bankHistory.push(bank);	// push bank one final time after exit
+		document.getElementById('results').innerHTML =
+		"This is how many games were played: " + bankHistory.length +
+		"<br/>This is the content of the bankHistory array: <br/>" + bankHistory;
+		}
 
-			function simulateGame(minBet, maxBet, bank, winProb, steps, target) {
-				var bets = new Array();
-				var bankHistory = new Array();
+	function winOrLose(winProb) {
+		if(Math.random() < winProb){
+			return "win";
+		} else {
+			return "lose";
+		}
+	}
 
-				bankHistory[0] = bank;
+	</script>
 
-				for(var x  = 0; x < steps; x++) {
-					bets[x] = target / steps;
-				}
+</head>
+		<body>
+			Minimum Bet: <input type = "text" id = "minBet"/>
+			<br/>
+			Maximum Bet: <input type = "text" id = "maxBet"/>
+			<br/>
+			Bank Amount: <input type = "text" id = "bank"/>
+			<br/>
+			Probability of Winning: <input type = "text" id = "winProb"/>
+			<br/>
+			Number of Steps: <input type = "text" id = "steps"/>
+			<br/>
+			Target Winnings: <input type = "text" id = "target"/>
+			<br/>
 
-				// While the game can be played
-				while(bets.length > 1 && bank > 0) {
-					var bet = bets[0] + bets[bets.length - 1];
+			<input type = "button" value = "Simulate!" onclick = "processInputs()"/>
 
-					// Only play if your bet is <= your bank
-					if(bet <= bank) {
-						// If we won the bet
-						if(winOrLose(winProb) == "win") {
-							bank = (bank * 1) + (bet * 1);	// Add to our bank because we won
-							bets.pop();	// Remove the last element from the bets array because we won
-							bets.shift();	// Remove the first element from the bets array because we won
-						} else {
-							bank = (bank * 1) - (bet * 1);	// Subtract from our bank because we lost
-							bets.push(bet);	// Add the bet to the end of the bets array because we lost
-						}
-						bankHistory.push(bank);	// Record the current value of our bank for history
-					}
-				}
-
-				document.getElementById('results').innerHTML =
-					"This is how many games were played: " + bankHistory.length +
-					"<br/>This is the content of the bankHistory array: <br/>" + bankHistory;
-			}
-
-			function winOrLose(winProb) {
-				//randomNum = Math.random();
-				//document.write("The random number was: " + randomNum + "<br/>");
-				if(Math.random() < winProb){
-					return "win";
-				} else {
-					return "lose";
-				}
-			}
-			
-		</script>
-	</head>
-	<body>
-
-		Minimum Bet: <input type = "text" id = "minBet"/>
-		<br/>
-		Maximum Bet: <input type = "text" id = "maxBet"/>
-		<br/>
-		Bank Amount: <input type = "text" id = "bank"/>
-		<br/>
-		Probability of Winning: <input type = "text" id = "winProb"/>
-		<br/>
-		Number of Steps: <input type = "text" id = "steps"/>
-		<br/>
-		Target Winnings: <input type = "text" id = "target"/>
-		<br/>
-
-		<input type = "button" value = "Simulate!" onclick = "processInputs()"/>
-
-		<div id = "results"></div>
-	</body>
+			<div id = "results"></div>
+		</body>
 </html>
