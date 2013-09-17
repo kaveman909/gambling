@@ -86,8 +86,8 @@ Outputs
 		"<br/>This is your bank history: <br/>" + bankHistory + 
 		"<br/>This is your betting history: <br/>" + betHistory;
 
-		$.jqplot('bankChart',  [bankHistory]);
-		$.jqplot('betChart',  [betHistory]);
+		$.jqplot('bankChart',  [bankHistory], { title:'Bank History'});
+		$.jqplot('betChart',  [betHistory], { title: 'Bet History'});
 
 		}
 
