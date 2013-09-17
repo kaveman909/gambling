@@ -50,6 +50,7 @@ Outputs
 
 	function simulateGame(minBet, maxBet, bank, winProb, steps, target) {
 		var bets = new Array();
+		var betHistory = new Array();
 		var bankHistory = new Array();
 
 		for(var x  = 0; x < steps; x++) {
@@ -63,6 +64,7 @@ Outputs
 		while((bets.length > 0) && (bank > 0) && (bet <= bank)) {
 			lastBet = bets.length - 1;
 			bet = bets[0] + bets[lastBet];
+			betHistory.push(bet);	// Record the current value of our bet for history
 			bankHistory.push(bank);	// Record the current value of our bank for history
 			// If we won the bet
 			if(winOrLose(winProb) == "win") {
@@ -77,7 +79,8 @@ Outputs
 		bankHistory.push(bank);	// push bank one final time after exit
 		document.getElementById('results').innerHTML =
 		"This is how many games were played: " + bankHistory.length +
-		"<br/>This is the content of the bankHistory array: <br/>" + bankHistory;
+		"<br/>This is your bank history: <br/>" + bankHistory + 
+		"<br/>This is your betting history: <br/>" + betHistory;
 		}
 
 	function winOrLose(winProb) {
