@@ -26,9 +26,12 @@ Outputs
 <html>
 <head>
 	<title>Incrementer - Karl Udris and David Tracy</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="jquery.mobile-1.4.0-alpha.2.min.css">
+	<link rel="stylesheet" href="jquery.jqplot.css" />
 	<script src="jquery-1.10.2.min.js"></script>
 	<script src="jquery.mobile-1.4.0-alpha.2.min.js"></script>
+	<script src="jquery.jqplot.min.js"></script>
 	<script type="text/javascript">
 
 	function processInputs() {
@@ -61,7 +64,6 @@ Outputs
 
 		var lastBet = bets.length - 1;	// index of most recent bet placed
 		var bet = bets[0] + bets[lastBet];	
-
 		// While the game can be played
 		while((bets.length > 0) && (bank > 0) && (bet <= bank)) {
 			lastBet = bets.length - 1;
@@ -83,6 +85,10 @@ Outputs
 		"This is how many games were played: " + bankHistory.length +
 		"<br/>This is your bank history: <br/>" + bankHistory + 
 		"<br/>This is your betting history: <br/>" + betHistory;
+
+		$.jqplot('bankChart',  [bankHistory]);
+		$.jqplot('betChart',  [betHistory]);
+
 		}
 
 	function winOrLose(winProb) {
@@ -96,22 +102,19 @@ Outputs
 	</script>
 
 </head>
-		<body>
-			Minimum Bet: <input type = "text" id = "minBet"/>
-			<br/>
-			Maximum Bet: <input type = "text" id = "maxBet"/>
-			<br/>
-			Bank Amount: <input type = "text" id = "bank"/>
-			<br/>
-			Probability of Winning: <input type = "text" id = "winProb"/>
-			<br/>
-			Number of Steps: <input type = "text" id = "steps"/>
-			<br/>
-			Target Winnings: <input type = "text" id = "target"/>
-			<br/>
+	<body>
+		<div data-role="content">
+		Minimum Bet: <input type = "text" id = "minBet"/>
+		Maximum Bet: <input type = "text" id = "maxBet"/>
+	 	Bank Amount: <input type = "text" id = "bank"/>
+		Probability of Winning: <input type = "text" id = "winProb"/>
+		Number of Steps: <input type = "text" id = "steps"/>
+		Target Winnings: <input type = "text" id = "target"/>
 
-			<input type = "button" value = "Simulate!" onclick = "processInputs()"/>
-
-			<div id = "results"></div>
-		</body>
+		<input type = "button" value = "Simulate!" onclick = "processInputs()"/>
+		</div>
+		<div id = "results"></div>
+		<div id = "bankChart" style="height:400px;width:800px; "></div>
+		<div id = "betChart" style="height:400px;width:800px; "></div>
+	</body>
 </html>
