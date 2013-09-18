@@ -1,4 +1,6 @@
 <?php
-$output = shell_exec('sudo git pull');
+
+$output = shell_exec('git pull');
 echo "<pre>$output</pre>";
+
 ?>
