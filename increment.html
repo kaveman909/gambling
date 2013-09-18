@@ -68,6 +68,11 @@ Outputs
 		while((bets.length > 0) && (bank > 0) && (bet <= bank)) {
 			lastBet = bets.length - 1;
 			bet = bets[0] + bets[lastBet];
+			// check that bet isn't greater than the maximum allowed bet
+			if (bet > maxBet)
+			{
+				bet = maxBet;
+			}
 			betHistory.push(bet);	// Record the current value of our bet for history
 			bankHistory.push(bank);	// Record the current value of our bank for history
 			// If we won the bet
